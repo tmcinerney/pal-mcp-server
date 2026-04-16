@@ -190,6 +190,13 @@ def clear_model_restriction_env(monkeypatch):
     for var in restriction_vars:
         monkeypatch.delenv(var, raising=False)
 
+    # Reset the restriction service singleton so it re-reads env vars for each test.
+    # Without this, a test that sets *_ALLOWED_MODELS (e.g. codegen cassette tests)
+    # can leak its restriction into subsequent tests via the cached singleton.
+    import utils.model_restrictions as _mr
+
+    _mr._restriction_service = None
+
 
 @pytest.fixture(autouse=True)
 def disable_force_env_override(monkeypatch):
