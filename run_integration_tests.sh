@@ -3,7 +3,7 @@
 # PAL MCP Server - Run Integration Tests
 # This script runs integration tests that require API keys.
 #
-# Requires: devenv shell with secrets loaded via secretspec / use_op
+# Requires: API keys set via environment variables or .env file
 
 set -e  # Exit on any error
 
