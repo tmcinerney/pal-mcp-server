@@ -178,16 +178,10 @@ CLAUDE.local.md
 # Claude Code personal settings
 .claude/settings.local.json
 
-# devenv (local developer environment)
+# devenv (local overrides only - devenv.nix/yaml/.envrc are committed)
 .devenv/
-devenv.nix
-devenv.yaml
 devenv.lock
 devenv.local.yaml
-.envrc
-.env.op
-.env.op-cache
-.env.op-items
 
 # Standalone mode files
 .pal_venv/
