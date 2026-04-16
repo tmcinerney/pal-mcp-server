@@ -81,7 +81,7 @@ profile_default/
 ipython_config.py
 
 # pyenv
-.python-version
+# .python-version — tracked as single source of truth for Python version
 
 # pipenv
 Pipfile.lock
@@ -177,6 +177,17 @@ CLAUDE.local.md
 
 # Claude Code personal settings
 .claude/settings.local.json
+
+# devenv (local developer environment)
+.devenv/
+devenv.nix
+devenv.yaml
+devenv.lock
+devenv.local.yaml
+.envrc
+.env.op
+.env.op-cache
+.env.op-items
 
 # Standalone mode files
 .pal_venv/
