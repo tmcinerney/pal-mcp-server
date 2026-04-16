@@ -125,7 +125,7 @@ class BaseCLIAgent:
                 process.communicate(prompt.encode("utf-8")),
                 timeout=self.client.timeout_seconds,
             )
-        except asyncio.TimeoutError as exc:
+        except TimeoutError as exc:
             process.kill()
             await process.communicate()
             raise CLIAgentError(

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -455,7 +455,7 @@ class CLinkTool(SimpleTool):
             try:
                 path = Path(file_path)
                 stat = path.stat()
-                modified = datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc).isoformat()
+                modified = datetime.fromtimestamp(stat.st_mtime, tz=UTC).isoformat()
                 size = stat.st_size
                 references.append(f"- {file_path} (last modified {modified}, {size} bytes)")
             except OSError:

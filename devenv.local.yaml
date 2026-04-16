@@ -1,0 +1,3 @@
+secretspec:
+  enable: true
+  provider: "onepassword://s4jb5iiingig5i3i6rxjdprqge"

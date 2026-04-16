@@ -2,13 +2,30 @@
 name = "pal-mcp-server"
 version = "9.8.2"
 description = "AI-powered MCP server with multiple model providers"
-requires-python = ">=3.9"
+requires-python = ">=3.12"
 dependencies = [
     "mcp>=1.0.0",
     "google-genai>=1.19.0",
     "openai>=1.55.2",
     "pydantic>=2.0.0",
     "python-dotenv>=1.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-mock>=3.11.0",
+    "python-semantic-release>=10.3.0",
+    "build>=1.0.0",
+]
+# AIDEV-NOTE: lint tools have native binaries that won't run on NixOS
+# when installed via uv. On NixOS, these are provided by Nix packages
+# in devenv.nix. On other platforms, sync this group: uv sync --group lint
+lint = [
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "isort>=5.12.0",
 ]
 
 [tool.setuptools.packages.find]
@@ -40,7 +57,7 @@ pal-mcp-server = "server:run"
 
 [tool.black]
 line-length = 120
-target-version = ['py39', 'py310', 'py311', 'py312', 'py313']
+target-version = ['py312', 'py313']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -68,10 +85,10 @@ force_grid_wrap = 0
 use_parentheses = true
 ensure_newline_before_comments = true
 line_length = 120
-skip_glob = ["venv/*", ".venv/*", ".pal_venv/*"]
+skip_glob = ["venv/*", ".venv/*", ".devenv/*"]
 
 [tool.ruff]
-target-version = "py39"
+target-version = "py312"
 line-length = 120
 
 [tool.ruff.lint]
@@ -89,6 +106,7 @@ ignore = [
     "B008",  # do not perform function calls in argument defaults
     "C901",  # too complex
     "B904",  # exception handling with raise from
+    "B905",  # zip() without strict= (upstream code)
 ]
 
 [tool.ruff.lint.per-file-ignores]
