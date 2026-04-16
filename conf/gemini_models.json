@@ -26,15 +26,16 @@
   },
   "models": [
     {
-      "model_name": "gemini-3-pro-preview",
-      "friendly_name": "Gemini Pro 3.0 Preview",
+      "model_name": "gemini-3.1-pro-preview",
+      "friendly_name": "Gemini Pro 3.1 Preview",
       "aliases": [
         "pro",
         "gemini3",
-        "gemini-pro"
+        "gemini-pro",
+        "gemini3.1"
       ],
       "intelligence_score": 18,
-      "description": "Deep reasoning + thinking mode (1M context) - Complex problems, architecture, deep analysis",
+      "description": "Gemini 3.1 Pro (1M context, 65K output) - Flagship reasoning with thinking_level support, vision, computer use",
       "context_window": 1048576,
       "max_output_tokens": 65536,
       "max_thinking_tokens": 32768,
@@ -54,8 +55,8 @@
       "aliases": [
         "gemini-pro-2.5"
       ],
-      "intelligence_score": 18,
-      "description": "Older Model. 1M context - Complex problems, architecture, deep analysis",
+      "intelligence_score": 16,
+      "description": "DEPRECATED (shuts down June 17, 2026) - Gemini 2.5 Pro (1M context). Use gemini-3.1-pro-preview instead.",
       "context_window": 1048576,
       "max_output_tokens": 65536,
       "max_thinking_tokens": 32768,
@@ -66,18 +67,17 @@
       "supports_json_mode": true,
       "supports_images": true,
       "supports_temperature": true,
-      "allow_code_generation": true,
       "max_image_size_mb": 32.0
     },
     {
-      "model_name": "gemini-2.0-flash",
-      "friendly_name": "Gemini (Flash 2.0)",
+      "model_name": "gemini-3-flash-preview",
+      "friendly_name": "Gemini Flash 3.0 Preview",
       "aliases": [
-        "flash-2.0",
-        "flash2"
+        "flash3",
+        "gemini3-flash"
       ],
-      "intelligence_score": 9,
-      "description": "Gemini 2.0 Flash (1M context) - Latest fast model with experimental thinking, supports audio/video input",
+      "intelligence_score": 12,
+      "description": "Gemini 3 Flash (1M context, 65K output) - Fast reasoning with thinking_level support, vision, computer use",
       "context_window": 1048576,
       "max_output_tokens": 65536,
       "max_thinking_tokens": 24576,
@@ -91,23 +91,26 @@
       "max_image_size_mb": 20.0
     },
     {
-      "model_name": "gemini-2.0-flash-lite",
-      "friendly_name": "Gemini (Flash Lite 2.0)",
+      "model_name": "gemini-3.1-flash-lite-preview",
+      "friendly_name": "Gemini Flash Lite 3.1 Preview",
       "aliases": [
         "flashlite",
-        "flash-lite"
+        "flash-lite",
+        "lite"
       ],
-      "intelligence_score": 7,
-      "description": "Gemini 2.0 Flash Lite (1M context) - Lightweight fast model, text-only",
+      "intelligence_score": 9,
+      "description": "Gemini 3.1 Flash Lite (1M context, 65K output) - Cheapest Gemini model with thinking_level support",
       "context_window": 1048576,
       "max_output_tokens": 65536,
-      "supports_extended_thinking": false,
+      "max_thinking_tokens": 24576,
+      "supports_extended_thinking": true,
       "supports_system_prompts": true,
       "supports_streaming": true,
       "supports_function_calling": true,
       "supports_json_mode": true,
-      "supports_images": false,
-      "supports_temperature": true
+      "supports_images": true,
+      "supports_temperature": true,
+      "max_image_size_mb": 20.0
     },
     {
       "model_name": "gemini-2.5-flash",
@@ -117,7 +120,7 @@
         "flash2.5"
       ],
       "intelligence_score": 10,
-      "description": "Ultra-fast (1M context) - Quick analysis, simple queries, rapid iterations",
+      "description": "DEPRECATED (shuts down June 17, 2026) - Gemini 2.5 Flash (1M context). Use gemini-3-flash-preview instead.",
       "context_window": 1048576,
       "max_output_tokens": 65536,
       "max_thinking_tokens": 24576,

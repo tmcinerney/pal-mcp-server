@@ -1,7 +1,7 @@
 """OpenAI model provider implementation."""
 
 import logging
-from typing import TYPE_CHECKING, ClassVar, Optional
+from typing import TYPE_CHECKING, ClassVar
 
 if TYPE_CHECKING:
     from tools.models import ToolModelCategory
@@ -40,8 +40,8 @@ class OpenAIModelProvider(RegistryBackedProviderMixin, OpenAICompatibleProvider)
     def _lookup_capabilities(
         self,
         canonical_name: str,
-        requested_name: Optional[str] = None,
-    ) -> Optional[ModelCapabilities]:
+        requested_name: str | None = None,
+    ) -> ModelCapabilities | None:
         """Look up OpenAI capabilities from built-ins or the custom registry."""
 
         self._ensure_registry()
@@ -90,7 +90,7 @@ class OpenAIModelProvider(RegistryBackedProviderMixin, OpenAICompatibleProvider)
     # Provider preferences
     # ------------------------------------------------------------------
 
-    def get_preferred_model(self, category: "ToolModelCategory", allowed_models: list[str]) -> Optional[str]:
+    def get_preferred_model(self, category: "ToolModelCategory", allowed_models: list[str]) -> str | None:
         """Get OpenAI's preferred model for a given category from allowed models.
 
         Args:
@@ -106,7 +106,7 @@ class OpenAIModelProvider(RegistryBackedProviderMixin, OpenAICompatibleProvider)
             return None
 
         # Helper to find first available from preference list
-        def find_first(preferences: list[str]) -> Optional[str]:
+        def find_first(preferences: list[str]) -> str | None:
             """Return first available model from preference list."""
             for model in preferences:
                 if model in allowed_models:
@@ -114,10 +114,12 @@ class OpenAIModelProvider(RegistryBackedProviderMixin, OpenAICompatibleProvider)
             return None
 
         if category == ToolModelCategory.EXTENDED_REASONING:
-            # Prefer models with extended thinking support
-            # GPT-5.1 Codex first for coding tasks
+            # Prefer models with strongest reasoning capabilities
             preferred = find_first(
                 [
+                    "gpt-5.4-pro",
+                    "gpt-5.3-codex",
+                    "gpt-5.4",
                     "gpt-5.1-codex",
                     "gpt-5.2",
                     "gpt-5-codex",
@@ -131,9 +133,11 @@ class OpenAIModelProvider(RegistryBackedProviderMixin, OpenAICompatibleProvider)
 
         elif category == ToolModelCategory.FAST_RESPONSE:
             # Prefer fast, cost-efficient models
-            # GPT-5.2 models for speed, GPT-5.1-Codex after (premium pricing but cached)
             preferred = find_first(
                 [
+                    "gpt-5.4-mini",
+                    "gpt-5.4-nano",
+                    "gpt-5.4",
                     "gpt-5.2",
                     "gpt-5.1-codex-mini",
                     "gpt-5",
@@ -147,9 +151,10 @@ class OpenAIModelProvider(RegistryBackedProviderMixin, OpenAICompatibleProvider)
 
         else:  # BALANCED or default
             # Prefer balanced performance/cost models
-            # Include GPT-5.2 family for latest capabilities
             preferred = find_first(
                 [
+                    "gpt-5.4",
+                    "gpt-5.4-mini",
                     "gpt-5.2",
                     "gpt-5.1-codex",
                     "gpt-5",

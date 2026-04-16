@@ -1,8 +1,8 @@
-"""Integration test for Chat tool code generation with Gemini 2.5 Pro.
+"""Integration test for Chat tool code generation with Gemini 3.1 Pro Preview.
 
 This test uses the Google Gemini SDK's built-in record/replay support. To refresh the
 cassette, delete the existing JSON file under
-``tests/gemini_cassettes/chat_codegen/gemini25_pro_calculator/mldev.json`` and run:
+``tests/gemini_cassettes/chat_codegen/gemini31_pro_preview_calculator/mldev.json`` and run:
 
 ```
 GEMINI_API_KEY=<real-key> pytest tests/test_chat_codegen_integration.py::test_chat_codegen_saves_file
@@ -26,14 +26,14 @@ from tools.chat import ChatTool
 
 REPLAYS_ROOT = Path(__file__).parent / "gemini_cassettes"
 CASSETTE_DIR = REPLAYS_ROOT / "chat_codegen"
-CASSETTE_PATH = CASSETTE_DIR / "gemini25_pro_calculator" / "mldev.json"
-CASSETTE_REPLAY_ID = "chat_codegen/gemini25_pro_calculator/mldev"
+CASSETTE_PATH = CASSETTE_DIR / "gemini31_pro_preview_calculator" / "mldev.json"
+CASSETTE_REPLAY_ID = "chat_codegen/gemini31_pro_preview_calculator/mldev"
 
 
 @pytest.mark.asyncio
 @pytest.mark.no_mock_provider
 async def test_chat_codegen_saves_file(monkeypatch, tmp_path):
-    """Ensure Gemini 2.5 Pro responses create pal_generated.code when code is emitted."""
+    """Ensure Gemini 3.1 Pro Preview responses create pal_generated.code when code is emitted."""
 
     CASSETTE_PATH.parent.mkdir(parents=True, exist_ok=True)
 
@@ -51,7 +51,7 @@ async def test_chat_codegen_saves_file(monkeypatch, tmp_path):
     with monkeypatch.context() as m:
         m.setenv("GEMINI_API_KEY", gemini_key)
         m.setenv("DEFAULT_MODEL", "auto")
-        m.setenv("GOOGLE_ALLOWED_MODELS", "gemini-2.5-pro")
+        m.setenv("GOOGLE_ALLOWED_MODELS", "gemini-3.1-pro-preview")
         m.setenv("GOOGLE_GENAI_CLIENT_MODE", client_mode)
         m.setenv("GOOGLE_GENAI_REPLAYS_DIRECTORY", str(REPLAYS_ROOT))
         m.setenv("GOOGLE_GENAI_REPLAY_ID", CASSETTE_REPLAY_ID)
@@ -78,12 +78,12 @@ async def test_chat_codegen_saves_file(monkeypatch, tmp_path):
         result = await chat_tool.execute(
             {
                 "prompt": prompt,
-                "model": "gemini-2.5-pro",
+                "model": "gemini-3.1-pro-preview",
                 "working_directory_absolute_path": str(working_dir),
             }
         )
 
-        provider = ModelProviderRegistry.get_provider_for_model("gemini-2.5-pro")
+        provider = ModelProviderRegistry.get_provider_for_model("gemini-3.1-pro-preview")
         if provider is not None:
             try:
                 provider.client.close()

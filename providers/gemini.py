@@ -2,7 +2,7 @@
 
 import base64
 import logging
-from typing import TYPE_CHECKING, ClassVar, Optional
+from typing import TYPE_CHECKING, ClassVar
 
 if TYPE_CHECKING:
     from tools.models import ToolModelCategory
@@ -33,7 +33,7 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
     MODEL_CAPABILITIES: ClassVar[dict[str, ModelCapabilities]] = {}
 
     # Thinking mode configurations - percentages of model's max_thinking_tokens
-    # These percentages work across all models that support thinking
+    # Used for Gemini 2.x models that accept a numeric thinking_budget
     THINKING_BUDGETS = {
         "minimal": 0.005,  # 0.5% of max - minimal thinking for fast responses
         "low": 0.08,  # 8% of max - light reasoning tasks
@@ -41,6 +41,21 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
         "high": 0.67,  # 67% of max - complex analysis
         "max": 1.0,  # 100% of max - full thinking budget
     }
+
+    # Gemini 3.x thinking levels - maps PAL mode names to Gemini API enum values
+    # 3.x uses thinking_level (enum) instead of thinking_budget (numeric)
+    THINKING_LEVELS_3X = {
+        "minimal": "MINIMAL",  # Only available on Flash models, not Pro
+        "low": "LOW",
+        "medium": "MEDIUM",
+        "high": "HIGH",
+        "max": "HIGH",  # Gemini 3.x caps at HIGH
+    }
+
+    @staticmethod
+    def _is_gemini_3x(model_name: str) -> bool:
+        """Return True if the model uses the Gemini 3.x thinking_level API."""
+        return model_name.startswith("gemini-3")
 
     def __init__(self, api_key: str, **kwargs):
         """Initialize Gemini provider with API key and optional base URL."""
@@ -82,7 +97,7 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
                 self._client = genai.Client(api_key=self.api_key)
         return self._client
 
-    def _resolve_http_timeout(self) -> Optional[float]:
+    def _resolve_http_timeout(self) -> float | None:
         """Compute timeout override from shared custom timeout environment variables."""
 
         timeouts: list[float] = []
@@ -115,11 +130,11 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
         self,
         prompt: str,
         model_name: str,
-        system_prompt: Optional[str] = None,
+        system_prompt: str | None = None,
         temperature: float = 1.0,
-        max_output_tokens: Optional[int] = None,
+        max_output_tokens: int | None = None,
         thinking_mode: str = "medium",
-        images: Optional[list[str]] = None,
+        images: list[str] | None = None,
         **kwargs,
     ) -> ModelResponse:
         """
@@ -173,14 +188,7 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
         # Create contents structure
         contents = [{"parts": parts}]
 
-        # Gemini 3 Pro Preview currently rejects medium thinking budgets; bump to high.
         effective_thinking_mode = thinking_mode
-        if resolved_model_name == "gemini-3-pro-preview" and thinking_mode == "medium":
-            logger.debug(
-                "Overriding thinking mode 'medium' with 'high' for %s due to launch limitation",
-                resolved_model_name,
-            )
-            effective_thinking_mode = "high"
 
         # Prepare generation config
         generation_config = types.GenerateContentConfig(
@@ -193,13 +201,22 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
             generation_config.max_output_tokens = max_output_tokens
 
         # Add thinking configuration for models that support it
-        if capabilities.supports_extended_thinking and effective_thinking_mode in self.THINKING_BUDGETS:
-            # Get model's max thinking tokens and calculate actual budget
-            model_config = capability_map.get(resolved_model_name)
-            if model_config and model_config.max_thinking_tokens > 0:
-                max_thinking_tokens = model_config.max_thinking_tokens
-                actual_thinking_budget = int(max_thinking_tokens * self.THINKING_BUDGETS[effective_thinking_mode])
-                generation_config.thinking_config = types.ThinkingConfig(thinking_budget=actual_thinking_budget)
+        if capabilities.supports_extended_thinking and effective_thinking_mode:
+            if self._is_gemini_3x(resolved_model_name):
+                # Gemini 3.x: use thinking_level enum instead of numeric budget
+                level = self.THINKING_LEVELS_3X.get(effective_thinking_mode)
+                if level:
+                    # Pro models don't support MINIMAL; fall back to LOW
+                    if level == "MINIMAL" and "pro" in resolved_model_name:
+                        level = "LOW"
+                    generation_config.thinking_config = types.ThinkingConfig(thinking_level=level)
+            elif effective_thinking_mode in self.THINKING_BUDGETS:
+                # Gemini 2.x: use numeric thinking_budget
+                model_config = capability_map.get(resolved_model_name)
+                if model_config and model_config.max_thinking_tokens > 0:
+                    max_thinking_tokens = model_config.max_thinking_tokens
+                    actual_thinking_budget = int(max_thinking_tokens * self.THINKING_BUDGETS[effective_thinking_mode])
+                    generation_config.thinking_config = types.ThinkingConfig(thinking_budget=actual_thinking_budget)
 
         # Retry logic with progressive delays
         max_retries = 4  # Total of 4 attempts
@@ -430,7 +447,7 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
 
         return any(indicator in error_str for indicator in retryable_indicators)
 
-    def _process_image(self, image_path: str) -> Optional[dict]:
+    def _process_image(self, image_path: str) -> dict | None:
         """Process an image for Gemini API."""
         try:
             # Use base class validation
@@ -453,7 +470,7 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
             logger.error(f"Error processing image {image_path}: {e}")
             return None
 
-    def get_preferred_model(self, category: "ToolModelCategory", allowed_models: list[str]) -> Optional[str]:
+    def get_preferred_model(self, category: "ToolModelCategory", allowed_models: list[str]) -> str | None:
         """Get Gemini's preferred model for a given category from allowed models.
 
         Args:
@@ -471,7 +488,7 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
         capability_map = self.get_all_model_capabilities()
 
         # Helper to find best model from candidates
-        def find_best(candidates: list[str]) -> Optional[str]:
+        def find_best(candidates: list[str]) -> str | None:
             """Return best model from candidates (sorted for consistency)."""
             return sorted(candidates, reverse=True)[0] if candidates else None
 
@@ -499,14 +516,18 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
                 return find_best(pro_models)
 
         elif category == ToolModelCategory.FAST_RESPONSE:
-            # Prefer Flash models for speed
-            flash_models = [m for m in allowed_models if "flash" in m]
+            # Prefer Flash models (not Flash Lite) for speed
+            flash_models = [m for m in allowed_models if "flash" in m and "lite" not in m]
             if flash_models:
                 return find_best(flash_models)
+            # Fall back to Flash Lite
+            flash_lite = [m for m in allowed_models if "flash" in m and "lite" in m]
+            if flash_lite:
+                return find_best(flash_lite)
 
         # Default for BALANCED or as fallback
-        # Prefer Flash for balanced use, then Pro, then anything
-        flash_models = [m for m in allowed_models if "flash" in m]
+        # Prefer Flash (not Lite) for balanced use, then Pro, then anything
+        flash_models = [m for m in allowed_models if "flash" in m and "lite" not in m]
         if flash_models:
             return find_best(flash_models)
 
