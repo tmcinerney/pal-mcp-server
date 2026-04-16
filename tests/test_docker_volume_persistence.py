@@ -125,7 +125,7 @@ class TestDockerVolumeIntegration:
 
     def test_mcp_config_persistence(self):
         """Test that MCP configuration persists in named volume"""
-        mcp_config = {"models": ["gemini-2.0-flash", "gpt-4"], "default_model": "auto", "thinking_mode": "high"}
+        mcp_config = {"models": ["gemini-2.5-flash", "gpt-4"], "default_model": "auto", "thinking_mode": "high"}
 
         # Test config serialization/deserialization
         config_str = json.dumps(mcp_config)

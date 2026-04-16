@@ -79,7 +79,7 @@ class TestO3TemperatureParameterFixSimple:
         mock_response.choices = [Mock()]
         mock_response.choices[0].message.content = "Test response"
         mock_response.choices[0].finish_reason = "stop"
-        mock_response.model = "gpt-4.1-2025-04-14"
+        mock_response.model = "gpt-5.4"
         mock_response.id = "test-id"
         mock_response.created = 1234567890
         mock_response.usage = Mock()
@@ -97,18 +97,16 @@ class TestO3TemperatureParameterFixSimple:
         # Override model validation to bypass restrictions
         provider.validate_model_name = lambda name: True
 
-        # Call generate_content with regular model (use supported model)
-        provider.generate_content(
-            prompt="Test prompt", model_name="gpt-4.1-2025-04-14", temperature=0.5, max_output_tokens=100
-        )
+        # Call generate_content with regular model (gpt-5.4 has fixed temperature=1.0)
+        provider.generate_content(prompt="Test prompt", model_name="gpt-5.4", temperature=1.0, max_output_tokens=100)
 
         # Verify the API call was made WITH temperature and max_tokens
         mock_client.chat.completions.create.assert_called_once()
         call_kwargs = mock_client.chat.completions.create.call_args[1]
 
-        assert call_kwargs["temperature"] == 0.5, "Regular models should include temperature parameter"
+        assert call_kwargs["temperature"] == 1.0, "Regular models should include temperature parameter"
         assert call_kwargs["max_tokens"] == 100, "Regular models should include max_tokens parameter"
-        assert call_kwargs["model"] == "gpt-4.1-2025-04-14"
+        assert call_kwargs["model"] == "gpt-5.4"
 
     @patch("utils.model_restrictions.get_restriction_service")
     @patch("providers.openai_compatible.OpenAI")
@@ -195,7 +193,7 @@ class TestO3TemperatureParameterFixSimple:
             assert capabilities.supports_temperature is False, f"Model {model} should have supports_temperature=False"
 
         # Test that regular models DO support temperature parameter
-        regular_models = ["gpt-4.1-2025-04-14"]
+        regular_models = ["gpt-5.4"]
 
         for model in regular_models:
             try:
@@ -229,11 +227,11 @@ class TestO3TemperatureParameterFixSimple:
         assert temp_constraint.validate(1.0) is True
         assert temp_constraint.validate(0.5) is False
 
-        # Test regular model constraints - use gpt-4.1 which is supported
-        gpt41_capabilities = provider.get_capabilities("gpt-4.1")
-        assert gpt41_capabilities.temperature_constraint is not None
+        # Test GPT-5.4 constraints - also fixed temperature but supports_temperature=true
+        gpt54_capabilities = provider.get_capabilities("gpt-5.4")
+        assert gpt54_capabilities.temperature_constraint is not None
 
-        # Regular models should allow a range
-        temp_constraint = gpt41_capabilities.temperature_constraint
-        assert temp_constraint.validate(0.5) is True
+        # GPT-5.4 has fixed temperature=1.0 (like O3) but still sends it in the API call
+        temp_constraint = gpt54_capabilities.temperature_constraint
         assert temp_constraint.validate(1.0) is True
+        assert temp_constraint.validate(0.5) is False

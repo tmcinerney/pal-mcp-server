@@ -13,7 +13,7 @@ def _mock_chat_response(content: str = "retry success") -> SimpleNamespace:
     usage = SimpleNamespace(prompt_tokens=10, completion_tokens=5, total_tokens=15)
     message = SimpleNamespace(content=content)
     choice = SimpleNamespace(message=message, finish_reason="stop")
-    return SimpleNamespace(choices=[choice], model="gpt-4.1", id="resp-1", created=123, usage=usage)
+    return SimpleNamespace(choices=[choice], model="gpt-5.4", id="resp-1", created=123, usage=usage)
 
 
 def test_openai_provider_retries_on_transient_error(monkeypatch):
@@ -36,7 +36,7 @@ def test_openai_provider_retries_on_transient_error(monkeypatch):
         responses=SimpleNamespace(create=lambda **_: None),
     )
 
-    result = provider.generate_content("hello", "gpt-4.1")
+    result = provider.generate_content("hello", "gpt-5.4")
 
     assert attempts["count"] == 2, "Expected a retry before succeeding"
     assert result.content == "second attempt response"
@@ -67,7 +67,7 @@ def test_openai_provider_bails_on_non_retryable_error(monkeypatch):
     )
 
     with pytest.raises(RuntimeError) as excinfo:
-        provider.generate_content("hello", "gpt-4.1")
+        provider.generate_content("hello", "gpt-5.4")
 
     assert "after 1 attempt" in str(excinfo.value)
     assert attempts["count"] == 1

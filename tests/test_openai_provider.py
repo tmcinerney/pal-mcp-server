@@ -207,7 +207,7 @@ class TestOpenAIProvider:
         mock_response.choices = [MagicMock()]
         mock_response.choices[0].message.content = "Test response"
         mock_response.choices[0].finish_reason = "stop"
-        mock_response.model = "gpt-4.1-2025-04-14"  # API returns the resolved model name
+        mock_response.model = "gpt-5.4"  # API returns the resolved model name
         mock_response.id = "test-id"
         mock_response.created = 1234567890
         mock_response.usage = MagicMock()
@@ -219,21 +219,21 @@ class TestOpenAIProvider:
 
         provider = OpenAIModelProvider("test-key")
 
-        # Call generate_content with alias 'gpt4.1' (resolves to gpt-4.1, supports temperature)
+        # Call generate_content with alias 'gpt5.4' (resolves to gpt-5.4, supports temperature)
         result = provider.generate_content(
             prompt="Test prompt",
-            model_name="gpt4.1",
-            temperature=1.0,  # This should be resolved to "gpt-4.1"
+            model_name="gpt5.4",
+            temperature=1.0,  # This should be resolved to "gpt-5.4"
         )
 
         # Verify the API was called with the RESOLVED model name
         mock_client.chat.completions.create.assert_called_once()
         call_kwargs = mock_client.chat.completions.create.call_args[1]
 
-        # CRITICAL ASSERTION: The API should receive "gpt-4.1", not "gpt4.1"
-        assert call_kwargs["model"] == "gpt-4.1", f"Expected 'gpt-4.1' but API received '{call_kwargs['model']}'"
+        # CRITICAL ASSERTION: The API should receive "gpt-5.4", not "gpt5.4"
+        assert call_kwargs["model"] == "gpt-5.4", f"Expected 'gpt-5.4' but API received '{call_kwargs['model']}'"
 
-        # Verify other parameters (gpt-4.1 supports temperature unlike O3/O4 models)
+        # Verify other parameters (gpt-5.4 supports temperature unlike O3/O4 models)
         assert call_kwargs["temperature"] == 1.0
         assert len(call_kwargs["messages"]) == 1
         assert call_kwargs["messages"][0]["role"] == "user"
@@ -241,7 +241,7 @@ class TestOpenAIProvider:
 
         # Verify response
         assert result.content == "Test response"
-        assert result.model_name == "gpt-4.1"  # Should be the resolved name
+        assert result.model_name == "gpt-5.4"  # Should be the resolved name
 
     @patch("providers.openai_compatible.OpenAI")
     def test_generate_content_other_aliases(self, mock_openai_class):
