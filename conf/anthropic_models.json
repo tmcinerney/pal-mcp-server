@@ -1,0 +1,162 @@
+{
+  "_README": {
+    "description": "Model metadata for Anthropic's Claude API.",
+    "documentation": "https://docs.anthropic.com/en/docs/about-claude/models",
+    "usage": "Models listed here are exposed directly through the Anthropic provider. Aliases are case-insensitive.",
+    "field_notes": "Matches providers/shared/model_capabilities.py.",
+    "field_descriptions": {
+      "model_name": "The model identifier sent to the Anthropic API (e.g., 'claude-opus-4-6')",
+      "aliases": "Array of short names users can type instead of the full model name",
+      "context_window": "Total number of tokens the model can process (input + output combined)",
+      "max_output_tokens": "Maximum number of tokens the model can generate in a single response",
+      "max_thinking_tokens": "Maximum reasoning/thinking tokens the model will allocate when extended thinking is requested",
+      "supports_extended_thinking": "Whether the model supports extended reasoning tokens",
+      "supports_json_mode": "Whether the model can guarantee valid JSON output",
+      "supports_function_calling": "Whether the model supports function/tool calling",
+      "supports_images": "Whether the model can process images/visual input",
+      "max_image_size_mb": "Maximum total size in MB for all images combined",
+      "supports_temperature": "Whether the model accepts temperature parameter (note: temperature must be 1.0 when thinking is enabled)",
+      "temperature_constraint": "Type of temperature constraint: 'fixed' (fixed value), 'range' (continuous range), 'discrete' (specific values)",
+      "description": "Human-readable description of the model",
+      "intelligence_score": "1-20 human rating used as the primary signal for auto-mode model ordering",
+      "allow_code_generation": "Whether this model can generate and suggest fully working code"
+    }
+  },
+  "models": [
+    {
+      "model_name": "claude-opus-4-7",
+      "friendly_name": "Claude (Opus 4.7)",
+      "aliases": [
+        "opus",
+        "opus-4.7",
+        "claude-opus"
+      ],
+      "intelligence_score": 20,
+      "description": "Claude Opus 4.7 (1M context, 128K output) - Most capable Claude model with adaptive thinking. No temperature support.",
+      "context_window": 1000000,
+      "max_output_tokens": 128000,
+      "max_thinking_tokens": 128000,
+      "supports_extended_thinking": true,
+      "supports_system_prompts": true,
+      "supports_streaming": true,
+      "supports_function_calling": true,
+      "supports_json_mode": true,
+      "supports_images": true,
+      "supports_temperature": false,
+      "temperature_constraint": "fixed",
+      "allow_code_generation": true,
+      "max_image_size_mb": 5.0
+    },
+    {
+      "model_name": "claude-opus-4-6",
+      "friendly_name": "Claude (Opus 4.6)",
+      "aliases": [
+        "opus-4.6"
+      ],
+      "intelligence_score": 19,
+      "description": "Claude Opus 4.6 (1M context, 128K output) - High intelligence Claude model with extended thinking",
+      "context_window": 1000000,
+      "max_output_tokens": 128000,
+      "max_thinking_tokens": 128000,
+      "supports_extended_thinking": true,
+      "supports_system_prompts": true,
+      "supports_streaming": true,
+      "supports_function_calling": true,
+      "supports_json_mode": true,
+      "supports_images": true,
+      "supports_temperature": true,
+      "allow_code_generation": true,
+      "max_image_size_mb": 5.0
+    },
+    {
+      "model_name": "claude-sonnet-4-6",
+      "friendly_name": "Claude (Sonnet 4.6)",
+      "aliases": [
+        "sonnet",
+        "sonnet-4.6",
+        "claude-sonnet"
+      ],
+      "intelligence_score": 16,
+      "description": "Claude Sonnet 4.6 (200K context, 64K output) - Balanced intelligence and speed with extended thinking",
+      "context_window": 200000,
+      "max_output_tokens": 64000,
+      "max_thinking_tokens": 64000,
+      "supports_extended_thinking": true,
+      "supports_system_prompts": true,
+      "supports_streaming": true,
+      "supports_function_calling": true,
+      "supports_json_mode": true,
+      "supports_images": true,
+      "supports_temperature": true,
+      "allow_code_generation": true,
+      "max_image_size_mb": 5.0
+    },
+    {
+      "model_name": "claude-haiku-4-5-20251001",
+      "friendly_name": "Claude (Haiku 4.5)",
+      "aliases": [
+        "haiku",
+        "haiku-4.5",
+        "claude-haiku"
+      ],
+      "intelligence_score": 10,
+      "description": "Claude Haiku 4.5 (200K context, 8K output) - Fast and cost-effective",
+      "context_window": 200000,
+      "max_output_tokens": 8192,
+      "max_thinking_tokens": 0,
+      "supports_extended_thinking": false,
+      "supports_system_prompts": true,
+      "supports_streaming": true,
+      "supports_function_calling": true,
+      "supports_json_mode": true,
+      "supports_images": true,
+      "supports_temperature": true,
+      "allow_code_generation": false,
+      "max_image_size_mb": 5.0
+    },
+    {
+      "model_name": "claude-3-5-sonnet-20241022",
+      "friendly_name": "Claude (3.5 Sonnet) [RETIRED]",
+      "aliases": [
+        "sonnet-3.5",
+        "claude-3.5-sonnet"
+      ],
+      "intelligence_score": 13,
+      "description": "RETIRED - Claude 3.5 Sonnet has been removed from the Anthropic API",
+      "context_window": 200000,
+      "max_output_tokens": 8192,
+      "max_thinking_tokens": 0,
+      "supports_extended_thinking": false,
+      "supports_system_prompts": true,
+      "supports_streaming": true,
+      "supports_function_calling": true,
+      "supports_json_mode": true,
+      "supports_images": true,
+      "supports_temperature": true,
+      "allow_code_generation": false,
+      "max_image_size_mb": 5.0
+    },
+    {
+      "model_name": "claude-3-5-haiku-20241022",
+      "friendly_name": "Claude (3.5 Haiku) [RETIRED]",
+      "aliases": [
+        "haiku-3.5",
+        "claude-3.5-haiku"
+      ],
+      "intelligence_score": 8,
+      "description": "RETIRED - Claude 3.5 Haiku has been removed from the Anthropic API",
+      "context_window": 200000,
+      "max_output_tokens": 8192,
+      "max_thinking_tokens": 0,
+      "supports_extended_thinking": false,
+      "supports_system_prompts": true,
+      "supports_streaming": true,
+      "supports_function_calling": true,
+      "supports_json_mode": true,
+      "supports_images": true,
+      "supports_temperature": true,
+      "allow_code_generation": false,
+      "max_image_size_mb": 5.0
+    }
+  ]
+}

@@ -30,7 +30,7 @@ DEFAULT_MODEL = get_env("DEFAULT_MODEL", "auto") or "auto"
 # Auto mode detection - when DEFAULT_MODEL is "auto", Claude picks the model
 IS_AUTO_MODE = DEFAULT_MODEL.lower() == "auto"
 
-# Each provider (gemini.py, openai.py, xai.py, dial.py, openrouter.py, custom.py, azure_openai.py)
+# Each provider (gemini.py, openai.py, anthropic.py, xai.py, dial.py, openrouter.py, custom.py, azure_openai.py)
 # defines its own MODEL_CAPABILITIES
 # with detailed descriptions. Tools use ModelProviderRegistry.get_available_model_names()
 # to get models only from enabled providers (those with valid API keys).
@@ -80,10 +80,10 @@ DEFAULT_CONSENSUS_MAX_INSTANCES_PER_COMBINATION = 2
 #
 # IMPORTANT: This limit ONLY applies to the Claude CLI ↔ MCP Server transport boundary.
 # It does NOT limit internal MCP Server operations like system prompts, file embeddings,
-# conversation history, or content sent to external models (Gemini/OpenAI/OpenRouter).
+# conversation history, or content sent to external models (Gemini/OpenAI/Anthropic/OpenRouter).
 #
 # MCP Protocol Architecture:
-# Claude CLI ←→ MCP Server ←→ External Model (Gemini/OpenAI/etc.)
+# Claude CLI ←→ MCP Server ←→ External Model (Gemini/OpenAI/Anthropic/etc.)
 #     ↑                              ↑
 #     │                              │
 # MCP transport                Internal processing

@@ -1,5 +1,6 @@
 """Model provider abstractions for supporting multiple AI providers."""
 
+from .anthropic import AnthropicModelProvider
 from .azure_openai import AzureOpenAIProvider
 from .base import ModelProvider
 from .gemini import GeminiModelProvider
@@ -14,6 +15,7 @@ __all__ = [
     "ModelResponse",
     "ModelCapabilities",
     "ModelProviderRegistry",
+    "AnthropicModelProvider",
     "AzureOpenAIProvider",
     "GeminiModelProvider",
     "OpenAIModelProvider",

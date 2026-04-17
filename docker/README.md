@@ -5,7 +5,7 @@
 ### 1. Prerequisites
 
 - Docker installed (Docker Compose optional)
-- At least one API key (Gemini, OpenAI, xAI, etc.)
+- At least one API key (Gemini, OpenAI, Anthropic, xAI, etc.)
 
 ### 2. Configuration
 
@@ -14,7 +14,7 @@
 cp .env.example .env
 
 # Edit with your API keys (at least one required)
-# Required: GEMINI_API_KEY or OPENAI_API_KEY or XAI_API_KEY
+# Required: GEMINI_API_KEY or OPENAI_API_KEY or ANTHROPIC_API_KEY or XAI_API_KEY
 nano .env
 ```
 
