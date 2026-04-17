@@ -21,7 +21,7 @@ This guide covers setting up multiple AI model providers including OpenRouter, c
 - **Private/enterprise APIs** that use OpenAI-compatible format
 - **Cost control** with local hardware
 
-**Use native APIs (Gemini/OpenAI) when you want:**
+**Use native APIs (Gemini/OpenAI/Anthropic) when you want:**
 - Direct access to specific providers without intermediary
 - Potentially lower latency and costs
 - Access to the latest model features immediately upon release

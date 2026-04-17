@@ -38,6 +38,7 @@ class ModelProviderRegistry:
     PROVIDER_PRIORITY_ORDER = [
         ProviderType.GOOGLE,  # Direct Gemini access
         ProviderType.OPENAI,  # Direct OpenAI access
+        ProviderType.ANTHROPIC,  # Direct Anthropic Claude access
         ProviderType.AZURE,  # Azure-hosted OpenAI deployments
         ProviderType.XAI,  # Direct X.AI GROK access
         ProviderType.DIAL,  # DIAL unified API access
@@ -123,6 +124,15 @@ class ModelProviderRegistry:
             if gemini_base_url:
                 provider_kwargs["base_url"] = gemini_base_url
                 logging.info(f"Initialized Gemini provider with custom endpoint: {gemini_base_url}")
+            provider = provider_class(**provider_kwargs)
+        elif provider_type == ProviderType.ANTHROPIC:
+            if not api_key:
+                return None
+            anthropic_base_url = get_env("ANTHROPIC_BASE_URL")
+            provider_kwargs = {"api_key": api_key}
+            if anthropic_base_url:
+                provider_kwargs["base_url"] = anthropic_base_url
+                logging.info(f"Initialized Anthropic provider with custom endpoint: {anthropic_base_url}")
             provider = provider_class(**provider_kwargs)
         elif provider_type == ProviderType.AZURE:
             if not api_key:
@@ -334,6 +344,7 @@ class ModelProviderRegistry:
         key_mapping = {
             ProviderType.GOOGLE: "GEMINI_API_KEY",
             ProviderType.OPENAI: "OPENAI_API_KEY",
+            ProviderType.ANTHROPIC: "ANTHROPIC_API_KEY",
             ProviderType.AZURE: "AZURE_OPENAI_API_KEY",
             ProviderType.XAI: "XAI_API_KEY",
             ProviderType.OPENROUTER: "OPENROUTER_API_KEY",
