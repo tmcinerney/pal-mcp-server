@@ -192,5 +192,6 @@ logs/
 /.desktop_configured
 
 /worktrees/
+/.worktrees/
 test_simulation_files/
 .mcp.json

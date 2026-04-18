@@ -407,6 +407,7 @@ def configure_providers():
     from providers.openai import OpenAIModelProvider
     from providers.openrouter import OpenRouterProvider
     from providers.shared import ProviderType
+    from providers.vertex_ai import VertexAIModelProvider
     from providers.xai import XAIModelProvider
     from utils.model_restrictions import get_restriction_service
 
@@ -441,6 +442,13 @@ def configure_providers():
         valid_providers.append("Anthropic")
         has_native_apis = True
         logger.info("Anthropic API key found - Claude models available")
+
+    # Check for Vertex AI configuration (GCP project + location)
+    vertex_project = get_env("GOOGLE_CLOUD_PROJECT")
+    if vertex_project:
+        valid_providers.append("Vertex AI")
+        has_native_apis = True
+        logger.info("Vertex AI project found - Gemini models available via Vertex AI")
 
     # Check for Azure OpenAI configuration
     azure_key = get_env("AZURE_OPENAI_API_KEY")
@@ -524,6 +532,10 @@ def configure_providers():
             ModelProviderRegistry.register_provider(ProviderType.ANTHROPIC, AnthropicModelProvider)
             registered_providers.append(ProviderType.ANTHROPIC.value)
             logger.debug(f"Registered provider: {ProviderType.ANTHROPIC.value}")
+        if vertex_project:
+            ModelProviderRegistry.register_provider(ProviderType.VERTEX_AI, VertexAIModelProvider)
+            registered_providers.append(ProviderType.VERTEX_AI.value)
+            logger.debug(f"Registered provider: {ProviderType.VERTEX_AI.value}")
         if azure_models_available:
             ModelProviderRegistry.register_provider(ProviderType.AZURE, AzureOpenAIProvider)
             registered_providers.append(ProviderType.AZURE.value)
@@ -566,6 +578,7 @@ def configure_providers():
             "- GEMINI_API_KEY for Gemini models\n"
             "- OPENAI_API_KEY for OpenAI models\n"
             "- ANTHROPIC_API_KEY for Claude models\n"
+            "- GOOGLE_CLOUD_PROJECT + GOOGLE_CLOUD_LOCATION for Vertex AI\n"
             "- XAI_API_KEY for X.AI GROK models\n"
             "- DIAL_API_KEY for DIAL models\n"
             "- OPENROUTER_API_KEY for OpenRouter (multiple models)\n"
@@ -620,7 +633,13 @@ def configure_providers():
 
         # Validate restrictions against known models
         provider_instances = {}
-        provider_types_to_validate = [ProviderType.GOOGLE, ProviderType.OPENAI, ProviderType.XAI, ProviderType.DIAL]
+        provider_types_to_validate = [
+            ProviderType.GOOGLE,
+            ProviderType.VERTEX_AI,
+            ProviderType.OPENAI,
+            ProviderType.XAI,
+            ProviderType.DIAL,
+        ]
         for provider_type in provider_types_to_validate:
             provider = ModelProviderRegistry.get_provider(provider_type)
             if provider:
@@ -639,7 +658,7 @@ def configure_providers():
         if not available_models:
             logger.error(
                 "Auto mode is enabled but no models are available after applying restrictions. "
-                "Please check your OPENAI_ALLOWED_MODELS and GOOGLE_ALLOWED_MODELS settings."
+                "Please check your OPENAI_ALLOWED_MODELS, GOOGLE_ALLOWED_MODELS, and VERTEX_AI_ALLOWED_MODELS settings."
             )
             raise ValueError(
                 "No models available for auto mode due to restrictions. "

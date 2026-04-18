@@ -11,6 +11,7 @@ class ProviderType(Enum):
     GOOGLE = "google"
     OPENAI = "openai"
     ANTHROPIC = "anthropic"
+    VERTEX_AI = "vertex-ai"
     AZURE = "azure"
     XAI = "xai"
     OPENROUTER = "openrouter"

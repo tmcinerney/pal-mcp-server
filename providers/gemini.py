@@ -30,6 +30,7 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
     """
 
     REGISTRY_CLASS = GeminiModelRegistry
+    FRIENDLY_NAME = "Gemini"
     MODEL_CAPABILITIES: ClassVar[dict[str, ModelCapabilities]] = {}
 
     # Thinking mode configurations - percentages of model's max_thinking_tokens
@@ -162,14 +163,7 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
 
         # Prepare content parts (text and potentially images)
         parts = []
-
-        # Add system and user prompts as text
-        if system_prompt:
-            full_prompt = f"{system_prompt}\n\n{prompt}"
-        else:
-            full_prompt = prompt
-
-        parts.append({"text": full_prompt})
+        parts.append({"text": prompt})
 
         # Add images if provided and model supports vision
         if images and capabilities.supports_images:
@@ -185,8 +179,8 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
         elif images and not capabilities.supports_images:
             logger.warning(f"Model {resolved_model_name} does not support images, ignoring {len(images)} image(s)")
 
-        # Create contents structure
-        contents = [{"parts": parts}]
+        # Create contents structure (explicit role required for Vertex AI)
+        contents = [{"role": "user", "parts": parts}]
 
         effective_thinking_mode = thinking_mode
 
@@ -194,6 +188,7 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
         generation_config = types.GenerateContentConfig(
             temperature=temperature,
             candidate_count=1,
+            system_instruction=system_prompt if system_prompt else None,
         )
 
         # Add max output tokens if specified
@@ -302,8 +297,8 @@ class GeminiModelProvider(RegistryBackedProviderMixin, ModelProvider):
                 content=response.text,
                 usage=usage,
                 model_name=resolved_model_name,
-                friendly_name="Gemini",
-                provider=ProviderType.GOOGLE,
+                friendly_name=self.FRIENDLY_NAME,
+                provider=self.get_provider_type(),
                 metadata={
                     "thinking_mode": effective_thinking_mode if capabilities.supports_extended_thinking else None,
                     "finish_reason": finish_reason_str,
