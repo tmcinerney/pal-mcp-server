@@ -39,6 +39,7 @@ class ModelProviderRegistry:
         ProviderType.GOOGLE,  # Direct Gemini access
         ProviderType.OPENAI,  # Direct OpenAI access
         ProviderType.ANTHROPIC,  # Direct Anthropic Claude access
+        ProviderType.VERTEX_AI,  # GCP Vertex AI (Gemini via ADC)
         ProviderType.AZURE,  # Azure-hosted OpenAI deployments
         ProviderType.XAI,  # Direct X.AI GROK access
         ProviderType.DIAL,  # DIAL unified API access
@@ -134,6 +135,16 @@ class ModelProviderRegistry:
                 provider_kwargs["base_url"] = anthropic_base_url
                 logging.info(f"Initialized Anthropic provider with custom endpoint: {anthropic_base_url}")
             provider = provider_class(**provider_kwargs)
+        elif provider_type == ProviderType.VERTEX_AI:
+            # GOOGLE_CLOUD_PROJECT serves as the sentinel key
+            if not api_key:
+                return None
+            vertex_location = get_env("GOOGLE_CLOUD_LOCATION", "us-central1")
+            provider = provider_class(
+                api_key="",
+                project=api_key,  # GOOGLE_CLOUD_PROJECT value
+                location=vertex_location,
+            )
         elif provider_type == ProviderType.AZURE:
             if not api_key:
                 return None
@@ -345,6 +356,7 @@ class ModelProviderRegistry:
             ProviderType.GOOGLE: "GEMINI_API_KEY",
             ProviderType.OPENAI: "OPENAI_API_KEY",
             ProviderType.ANTHROPIC: "ANTHROPIC_API_KEY",
+            ProviderType.VERTEX_AI: "GOOGLE_CLOUD_PROJECT",
             ProviderType.AZURE: "AZURE_OPENAI_API_KEY",
             ProviderType.XAI: "XAI_API_KEY",
             ProviderType.OPENROUTER: "OPENROUTER_API_KEY",

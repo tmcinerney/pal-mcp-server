@@ -120,6 +120,9 @@ def test_error_listing_respects_env_restrictions(monkeypatch, reset_registry):
         "AZURE_MODELS_CONFIG_PATH",
     ):
         monkeypatch.delenv(azure_var, raising=False)
+    # Disable Vertex AI provider from workstation env
+    monkeypatch.delenv("GOOGLE_CLOUD_PROJECT", raising=False)
+    monkeypatch.delenv("GOOGLE_CLOUD_LOCATION", raising=False)
 
     ModelProviderRegistry.reset_for_testing()
     model_restrictions._restriction_service = None
@@ -200,9 +203,12 @@ def test_error_listing_without_restrictions_shows_full_catalog(monkeypatch, rese
         "OPENAI_ALLOWED_MODELS",
         "OPENROUTER_ALLOWED_MODELS",
         "XAI_ALLOWED_MODELS",
+        "VERTEX_AI_ALLOWED_MODELS",
         "DIAL_ALLOWED_MODELS",
         "CUSTOM_API_URL",
         "CUSTOM_API_KEY",
+        "GOOGLE_CLOUD_PROJECT",
+        "GOOGLE_CLOUD_LOCATION",
     ):
         monkeypatch.delenv(var, raising=False)
 

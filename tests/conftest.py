@@ -189,6 +189,7 @@ def clear_model_restriction_env(monkeypatch):
         "ANTHROPIC_ALLOWED_MODELS",
         "XAI_ALLOWED_MODELS",
         "OPENROUTER_ALLOWED_MODELS",
+        "VERTEX_AI_ALLOWED_MODELS",
         "DIAL_ALLOWED_MODELS",
     ]
 
