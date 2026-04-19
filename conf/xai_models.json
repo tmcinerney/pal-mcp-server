@@ -23,6 +23,14 @@
       "intelligence_score": "1-20 human rating used as the primary signal for auto-mode model ordering"
     }
   },
+  "_generated": {
+    "by": "scripts/sync_litellm.py",
+    "from": [
+      "conf/litellm_models.json (LiteLLM snapshot)",
+      "conf/pal_overrides.json (PAL overlay)"
+    ],
+    "note": "Do not edit by hand. Edit the overlay and rerun the sync."
+  },
   "models": [
     {
       "model_name": "grok-4",

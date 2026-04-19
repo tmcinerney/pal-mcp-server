@@ -126,7 +126,7 @@ class TestOpenAIProvider:
         capabilities = provider.get_capabilities("mini")
         assert capabilities.model_name == "gpt-5-mini"  # "mini" now resolves to gpt-5-mini
         assert capabilities.friendly_name == "OpenAI (GPT-5-mini)"
-        assert capabilities.context_window == 400_000
+        assert capabilities.context_window == 272_000
         assert capabilities.provider == ProviderType.OPENAI
 
     def test_get_capabilities_gpt5(self):
@@ -136,7 +136,7 @@ class TestOpenAIProvider:
         capabilities = provider.get_capabilities("gpt-5")
         assert capabilities.model_name == "gpt-5"
         assert capabilities.friendly_name == "OpenAI (GPT-5)"
-        assert capabilities.context_window == 400_000
+        assert capabilities.context_window == 272_000
         assert capabilities.max_output_tokens == 128_000
         assert capabilities.provider == ProviderType.OPENAI
         assert capabilities.supports_extended_thinking is True
@@ -152,7 +152,7 @@ class TestOpenAIProvider:
         capabilities = provider.get_capabilities("gpt-5-mini")
         assert capabilities.model_name == "gpt-5-mini"
         assert capabilities.friendly_name == "OpenAI (GPT-5-mini)"
-        assert capabilities.context_window == 400_000
+        assert capabilities.context_window == 272_000
         assert capabilities.max_output_tokens == 128_000
         assert capabilities.provider == ProviderType.OPENAI
         assert capabilities.supports_extended_thinking is True

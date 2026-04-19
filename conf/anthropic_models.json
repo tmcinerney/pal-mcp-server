@@ -22,6 +22,14 @@
       "allow_code_generation": "Whether this model can generate and suggest fully working code"
     }
   },
+  "_generated": {
+    "by": "scripts/sync_litellm.py",
+    "from": [
+      "conf/litellm_models.json (LiteLLM snapshot)",
+      "conf/pal_overrides.json (PAL overlay)"
+    ],
+    "note": "Do not edit by hand. Edit the overlay and rerun the sync."
+  },
   "models": [
     {
       "model_name": "claude-opus-4-7",
@@ -43,9 +51,9 @@
       "supports_json_mode": true,
       "supports_images": true,
       "supports_temperature": false,
-      "temperature_constraint": "fixed",
       "allow_code_generation": true,
-      "max_image_size_mb": 5.0
+      "max_image_size_mb": 5.0,
+      "temperature_constraint": "fixed"
     },
     {
       "model_name": "claude-opus-4-6",
@@ -78,7 +86,7 @@
       ],
       "intelligence_score": 16,
       "description": "Claude Sonnet 4.6 (200K context, 64K output) - Balanced intelligence and speed with extended thinking",
-      "context_window": 200000,
+      "context_window": 1000000,
       "max_output_tokens": 64000,
       "max_thinking_tokens": 64000,
       "supports_extended_thinking": true,

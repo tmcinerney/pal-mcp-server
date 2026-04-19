@@ -41,20 +41,30 @@ ruff check --exclude test_simulation_files --exclude .devenv
 echo "Step 1 Complete: All linting and formatting checks passed!"
 echo ""
 
-# Step 2: Unit Tests
-echo "Step 2: Running Complete Unit Test Suite"
+# Step 2: Model config drift check
+echo "Step 2: Checking model config drift against LiteLLM overlay"
+echo "--------------------------------------------------------------"
+
+python scripts/sync_litellm.py check
+
+echo "Step 2 Complete: Model config in sync with overlay!"
+echo ""
+
+# Step 3: Unit Tests
+echo "Step 3: Running Complete Unit Test Suite"
 echo "---------------------------------------------"
 
 echo "Running unit tests (excluding integration tests)..."
 pytest tests/ -v -x -m "not integration"
 
-echo "Step 2 Complete: All unit tests passed!"
+echo "Step 3 Complete: All unit tests passed!"
 echo ""
 
-# Step 3: Final Summary
+# Step 4: Final Summary
 echo "All Code Quality Checks Passed!"
 echo "=================================="
 echo "Linting (ruff): PASSED"
 echo "Formatting (black): PASSED"
 echo "Import sorting (isort): PASSED"
+echo "Model config drift: PASSED"
 echo "Unit tests: PASSED"

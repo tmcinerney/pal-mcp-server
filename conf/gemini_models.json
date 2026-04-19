@@ -24,6 +24,14 @@
       "allow_code_generation": "Whether this model can generate and suggest fully working code - complete with functions, files, and detailed implementation instructions - for your AI tool to use right away. Only set this to 'true' for a model more capable than the AI model / CLI you're currently using."
     }
   },
+  "_generated": {
+    "by": "scripts/sync_litellm.py",
+    "from": [
+      "conf/litellm_models.json (LiteLLM snapshot)",
+      "conf/pal_overrides.json (PAL overlay)"
+    ],
+    "note": "Do not edit by hand. Edit the overlay and rerun the sync."
+  },
   "models": [
     {
       "model_name": "gemini-3.1-pro-preview",
@@ -58,7 +66,7 @@
       "intelligence_score": 16,
       "description": "DEPRECATED (shuts down June 17, 2026) - Gemini 2.5 Pro (1M context). Use gemini-3.1-pro-preview instead.",
       "context_window": 1048576,
-      "max_output_tokens": 65536,
+      "max_output_tokens": 65535,
       "max_thinking_tokens": 32768,
       "supports_extended_thinking": true,
       "supports_system_prompts": true,
@@ -122,7 +130,7 @@
       "intelligence_score": 10,
       "description": "DEPRECATED (shuts down June 17, 2026) - Gemini 2.5 Flash (1M context). Use gemini-3-flash-preview instead.",
       "context_window": 1048576,
-      "max_output_tokens": 65536,
+      "max_output_tokens": 65535,
       "max_thinking_tokens": 24576,
       "supports_extended_thinking": true,
       "supports_system_prompts": true,

@@ -115,7 +115,8 @@ class TestAnthropicProvider:
 
         capabilities = provider.get_capabilities("claude-sonnet-4-6")
         assert capabilities.model_name == "claude-sonnet-4-6"
-        assert capabilities.context_window == 200_000
+        # Sourced from LiteLLM which tracks Anthropic's 1M-context window for Sonnet 4.6.
+        assert capabilities.context_window == 1_000_000
         assert capabilities.max_output_tokens == 64_000
         assert capabilities.supports_extended_thinking is True
         assert capabilities.allow_code_generation is True

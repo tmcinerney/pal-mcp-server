@@ -24,6 +24,14 @@
       "allow_code_generation": "Whether this model can generate and suggest fully working code - complete with functions, files, and detailed implementation instructions - for your AI tool to use right away. Only set this to 'true' for a model more capable than the AI model / CLI you're currently using."
     }
   },
+  "_generated": {
+    "by": "scripts/sync_litellm.py",
+    "from": [
+      "conf/litellm_models.json (LiteLLM snapshot)",
+      "conf/pal_overrides.json (PAL overlay)"
+    ],
+    "note": "Do not edit by hand. Edit the overlay and rerun the sync."
+  },
   "models": [
     {
       "model_name": "gpt-5",
@@ -34,7 +42,7 @@
       ],
       "intelligence_score": 16,
       "description": "GPT-5 (400K context, 128K output) - Advanced model with reasoning support",
-      "context_window": 400000,
+      "context_window": 272000,
       "max_output_tokens": 128000,
       "supports_extended_thinking": true,
       "supports_system_prompts": true,
@@ -57,7 +65,7 @@
       ],
       "intelligence_score": 18,
       "description": "GPT-5.2 Pro (400K context, 272K output) - Very advanced, reasoning model",
-      "context_window": 400000,
+      "context_window": 272000,
       "max_output_tokens": 272000,
       "supports_extended_thinking": true,
       "supports_system_prompts": true,
@@ -66,10 +74,10 @@
       "supports_json_mode": true,
       "supports_images": true,
       "supports_temperature": true,
-      "max_image_size_mb": 20.0,
       "use_openai_response_api": true,
       "default_reasoning_effort": "high",
       "allow_code_generation": true,
+      "max_image_size_mb": 20.0,
       "temperature_constraint": "fixed"
     },
     {
@@ -82,7 +90,7 @@
       ],
       "intelligence_score": 15,
       "description": "GPT-5-mini (400K context, 128K output) - Efficient variant with reasoning support",
-      "context_window": 400000,
+      "context_window": 272000,
       "max_output_tokens": 128000,
       "supports_extended_thinking": true,
       "supports_system_prompts": true,
@@ -104,7 +112,7 @@
       ],
       "intelligence_score": 13,
       "description": "GPT-5 nano (400K context) - Fastest, cheapest version of GPT-5 for summarization and classification tasks",
-      "context_window": 400000,
+      "context_window": 272000,
       "max_output_tokens": 128000,
       "supports_extended_thinking": true,
       "supports_system_prompts": true,
@@ -122,7 +130,7 @@
       "intelligence_score": 14,
       "description": "Strong reasoning (200K context) - Logical problems, code generation, systematic analysis",
       "context_window": 200000,
-      "max_output_tokens": 65536,
+      "max_output_tokens": 100000,
       "supports_extended_thinking": false,
       "supports_system_prompts": true,
       "supports_streaming": true,
@@ -170,8 +178,8 @@
       "supports_json_mode": true,
       "supports_images": true,
       "supports_temperature": false,
-      "max_image_size_mb": 20.0,
       "use_openai_response_api": true,
+      "max_image_size_mb": 20.0,
       "temperature_constraint": "fixed"
     },
     {
@@ -183,6 +191,7 @@
       "intelligence_score": 11,
       "description": "Latest reasoning model (200K context) - Optimized for shorter contexts, rapid reasoning",
       "context_window": 200000,
+      "max_output_tokens": 100000,
       "supports_extended_thinking": false,
       "supports_system_prompts": true,
       "supports_streaming": true,
@@ -233,10 +242,10 @@
       "supports_json_mode": true,
       "supports_images": true,
       "supports_temperature": true,
-      "max_image_size_mb": 20.0,
       "use_openai_response_api": true,
       "default_reasoning_effort": "high",
       "allow_code_generation": true,
+      "max_image_size_mb": 20.0,
       "temperature_constraint": "fixed"
     },
     {
@@ -300,10 +309,10 @@
       "supports_json_mode": true,
       "supports_images": true,
       "supports_temperature": true,
-      "max_image_size_mb": 20.0,
       "use_openai_response_api": true,
       "default_reasoning_effort": "high",
       "allow_code_generation": true,
+      "max_image_size_mb": 20.0,
       "temperature_constraint": "fixed"
     },
     {
@@ -317,7 +326,7 @@
       ],
       "intelligence_score": 17,
       "description": "GPT-5 Codex (400K context) Specialized for coding, refactoring, and software architecture.",
-      "context_window": 400000,
+      "context_window": 272000,
       "max_output_tokens": 128000,
       "supports_extended_thinking": true,
       "supports_system_prompts": true,
@@ -326,8 +335,8 @@
       "supports_json_mode": true,
       "supports_images": true,
       "supports_temperature": true,
-      "max_image_size_mb": 20.0,
-      "use_openai_response_api": true
+      "use_openai_response_api": true,
+      "max_image_size_mb": 20.0
     },
     {
       "model_name": "gpt-5.2",
@@ -351,9 +360,9 @@
       "supports_json_mode": true,
       "supports_images": true,
       "supports_temperature": true,
-      "max_image_size_mb": 20.0,
       "default_reasoning_effort": "medium",
       "allow_code_generation": true,
+      "max_image_size_mb": 20.0,
       "temperature_constraint": "fixed"
     },
     {
@@ -377,10 +386,10 @@
       "supports_json_mode": true,
       "supports_images": true,
       "supports_temperature": true,
-      "max_image_size_mb": 20.0,
       "use_openai_response_api": true,
       "default_reasoning_effort": "high",
       "allow_code_generation": true,
+      "max_image_size_mb": 20.0,
       "temperature_constraint": "fixed"
     },
     {
@@ -403,8 +412,8 @@
       "supports_json_mode": true,
       "supports_images": true,
       "supports_temperature": true,
-      "max_image_size_mb": 20.0,
       "allow_code_generation": true,
+      "max_image_size_mb": 20.0,
       "temperature_constraint": "fixed"
     }
   ]
