@@ -299,10 +299,31 @@ black --check .
 isort --check-only .
 ```
 
+### Model Configuration Workflow
+
+**`conf/*_models.json` files are generated — do not hand-edit them.**
+
+Model capabilities are built from two sources:
+- `conf/litellm_models.json` — committed snapshot of LiteLLM's `model_prices_and_context_window.json`
+- `conf/pal_overrides.json` — hand-edited overlay for PAL-specific fields (`intelligence_score`, `aliases`, `max_thinking_tokens`, `allow_code_generation`) and explicit overrides of LiteLLM values.
+
+To change a model's capabilities:
+1. Edit `conf/pal_overrides.json`.
+2. Run `devenv shell -- python scripts/sync_litellm.py` to regenerate the per-provider files.
+3. Commit both the overlay and the regenerated configs.
+
+To pull the latest upstream model metadata:
+```bash
+devenv shell -- python scripts/sync_litellm.py refresh  # redownload + regenerate
+```
+
+`code_quality_checks.sh` runs `python scripts/sync_litellm.py check` which fails the build if any generated config is out of sync with the overlay.
+
 ### File Structure Context
 
 - `./code_quality_checks.sh` - Comprehensive quality check script
 - `./run-server.sh` - Server setup and management
+- `./scripts/sync_litellm.py` - Regenerate conf/*_models.json from LiteLLM + overlay
 - `communication_simulator_test.py` - End-to-end testing framework
 - `simulator_tests/` - Individual test modules
 - `tests/` - Unit test suite

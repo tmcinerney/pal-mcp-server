@@ -20,11 +20,21 @@
       "intelligence_score": "1-20 human rating used as the primary signal for auto-mode ordering"
     }
   },
+  "_generated": {
+    "by": "scripts/sync_litellm.py",
+    "from": [
+      "conf/litellm_models.json (LiteLLM snapshot)",
+      "conf/pal_overrides.json (PAL overlay)"
+    ],
+    "note": "Do not edit by hand. Edit the overlay and rerun the sync."
+  },
   "models": [
     {
       "model_name": "o3-2025-04-16",
       "friendly_name": "DIAL (O3)",
-      "aliases": ["o3"],
+      "aliases": [
+        "o3"
+      ],
       "intelligence_score": 14,
       "description": "OpenAI O3 via DIAL - Strong reasoning model",
       "context_window": 200000,
@@ -33,14 +43,16 @@
       "supports_function_calling": false,
       "supports_json_mode": true,
       "supports_images": true,
-      "max_image_size_mb": 20.0,
       "supports_temperature": false,
+      "max_image_size_mb": 20.0,
       "temperature_constraint": "fixed"
     },
     {
       "model_name": "o4-mini-2025-04-16",
       "friendly_name": "DIAL (O4-mini)",
-      "aliases": ["o4-mini"],
+      "aliases": [
+        "o4-mini"
+      ],
       "intelligence_score": 11,
       "description": "OpenAI O4-mini via DIAL - Fast reasoning model",
       "context_window": 200000,
@@ -49,14 +61,17 @@
       "supports_function_calling": false,
       "supports_json_mode": true,
       "supports_images": true,
-      "max_image_size_mb": 20.0,
       "supports_temperature": false,
+      "max_image_size_mb": 20.0,
       "temperature_constraint": "fixed"
     },
     {
       "model_name": "anthropic.claude-sonnet-4.1-20250805-v1:0",
       "friendly_name": "DIAL (Sonnet 4.1)",
-      "aliases": ["sonnet-4.1", "sonnet-4"],
+      "aliases": [
+        "sonnet-4.1",
+        "sonnet-4"
+      ],
       "intelligence_score": 10,
       "description": "Claude Sonnet 4.1 via DIAL - Balanced performance",
       "context_window": 200000,
@@ -65,14 +80,17 @@
       "supports_function_calling": false,
       "supports_json_mode": true,
       "supports_images": true,
-      "max_image_size_mb": 5.0,
       "supports_temperature": true,
+      "max_image_size_mb": 5.0,
       "temperature_constraint": "range"
     },
     {
       "model_name": "anthropic.claude-sonnet-4.1-20250805-v1:0-with-thinking",
       "friendly_name": "DIAL (Sonnet 4.1 Thinking)",
-      "aliases": ["sonnet-4.1-thinking", "sonnet-4-thinking"],
+      "aliases": [
+        "sonnet-4.1-thinking",
+        "sonnet-4-thinking"
+      ],
       "intelligence_score": 11,
       "description": "Claude Sonnet 4.1 with thinking mode via DIAL",
       "context_window": 200000,
@@ -81,14 +99,17 @@
       "supports_function_calling": false,
       "supports_json_mode": true,
       "supports_images": true,
-      "max_image_size_mb": 5.0,
       "supports_temperature": true,
+      "max_image_size_mb": 5.0,
       "temperature_constraint": "range"
     },
     {
       "model_name": "anthropic.claude-opus-4.1-20250805-v1:0",
       "friendly_name": "DIAL (Opus 4.1)",
-      "aliases": ["opus-4.1", "opus-4"],
+      "aliases": [
+        "opus-4.1",
+        "opus-4"
+      ],
       "intelligence_score": 14,
       "description": "Claude Opus 4.1 via DIAL - Most capable Claude model",
       "context_window": 200000,
@@ -97,14 +118,17 @@
       "supports_function_calling": false,
       "supports_json_mode": true,
       "supports_images": true,
-      "max_image_size_mb": 5.0,
       "supports_temperature": true,
+      "max_image_size_mb": 5.0,
       "temperature_constraint": "range"
     },
     {
       "model_name": "anthropic.claude-opus-4.1-20250805-v1:0-with-thinking",
       "friendly_name": "DIAL (Opus 4.1 Thinking)",
-      "aliases": ["opus-4.1-thinking", "opus-4-thinking"],
+      "aliases": [
+        "opus-4.1-thinking",
+        "opus-4-thinking"
+      ],
       "intelligence_score": 15,
       "description": "Claude Opus 4.1 with thinking mode via DIAL",
       "context_window": 200000,
@@ -113,14 +137,16 @@
       "supports_function_calling": false,
       "supports_json_mode": true,
       "supports_images": true,
-      "max_image_size_mb": 5.0,
       "supports_temperature": true,
+      "max_image_size_mb": 5.0,
       "temperature_constraint": "range"
     },
     {
       "model_name": "gemini-2.5-pro-preview-03-25-google-search",
       "friendly_name": "DIAL (Gemini 2.5 Pro Search)",
-      "aliases": ["gemini-2.5-pro-search"],
+      "aliases": [
+        "gemini-2.5-pro-search"
+      ],
       "intelligence_score": 17,
       "description": "Gemini 2.5 Pro with Google Search via DIAL",
       "context_window": 1000000,
@@ -129,14 +155,16 @@
       "supports_function_calling": false,
       "supports_json_mode": true,
       "supports_images": true,
-      "max_image_size_mb": 20.0,
       "supports_temperature": true,
+      "max_image_size_mb": 20.0,
       "temperature_constraint": "range"
     },
     {
       "model_name": "gemini-2.5-pro-preview-05-06",
       "friendly_name": "DIAL (Gemini 2.5 Pro)",
-      "aliases": ["gemini-2.5-pro"],
+      "aliases": [
+        "gemini-2.5-pro"
+      ],
       "intelligence_score": 18,
       "description": "Gemini 2.5 Pro via DIAL - Deep reasoning",
       "context_window": 1000000,
@@ -145,14 +173,16 @@
       "supports_function_calling": false,
       "supports_json_mode": true,
       "supports_images": true,
-      "max_image_size_mb": 20.0,
       "supports_temperature": true,
+      "max_image_size_mb": 20.0,
       "temperature_constraint": "range"
     },
     {
       "model_name": "gemini-2.5-flash-preview-05-20",
       "friendly_name": "DIAL (Gemini Flash 2.5)",
-      "aliases": ["gemini-2.5-flash"],
+      "aliases": [
+        "gemini-2.5-flash"
+      ],
       "intelligence_score": 10,
       "description": "Gemini 2.5 Flash via DIAL - Ultra-fast",
       "context_window": 1000000,
@@ -161,8 +191,8 @@
       "supports_function_calling": false,
       "supports_json_mode": true,
       "supports_images": true,
-      "max_image_size_mb": 20.0,
       "supports_temperature": true,
+      "max_image_size_mb": 20.0,
       "temperature_constraint": "range"
     }
   ]

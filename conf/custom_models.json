@@ -20,6 +20,14 @@
       "intelligence_score": "1-20 human rating used as the primary signal for auto-mode model ordering"
     }
   },
+  "_generated": {
+    "by": "scripts/sync_litellm.py",
+    "from": [
+      "conf/litellm_models.json (LiteLLM snapshot)",
+      "conf/pal_overrides.json (PAL overlay)"
+    ],
+    "note": "Do not edit by hand. Edit the overlay and rerun the sync."
+  },
   "models": [
     {
       "model_name": "llama3.2",
@@ -27,15 +35,15 @@
         "local-llama",
         "ollama-llama"
       ],
+      "intelligence_score": 6,
+      "description": "Local Llama 3.2 model via custom endpoint (Ollama/vLLM) - 128K context window (text-only)",
       "context_window": 128000,
       "max_output_tokens": 64000,
       "supports_extended_thinking": false,
-      "supports_json_mode": false,
       "supports_function_calling": false,
+      "supports_json_mode": false,
       "supports_images": false,
-      "max_image_size_mb": 0.0,
-      "description": "Local Llama 3.2 model via custom endpoint (Ollama/vLLM) - 128K context window (text-only)",
-      "intelligence_score": 6
+      "max_image_size_mb": 0.0
     }
   ]
 }
